@@ -15,7 +15,7 @@ from threading import Thread
 from typing import Literal
 
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
@@ -289,6 +289,45 @@ def api_dashboard():
         capture_output=True, text=True, cwd=Path(__file__).parent,
     )
     return {"ok": r.returncode == 0, "msg": r.stdout.strip() or r.stderr.strip()}
+
+
+@app.post("/api/upload-clipping")
+async def api_upload_clipping(file: UploadFile = File(...)):
+    """Recebe a planilha diária de clipping, roda o ETL (Trilha A) e atualiza o dashboard."""
+    nome = file.filename or "planilha.xls"
+    if not nome.lower().endswith((".xls", ".xlsx")):
+        return JSONResponse({"ok": False, "erro": "Envie um arquivo .xls ou .xlsx."}, status_code=400)
+
+    updir = Path("data/uploads")
+    updir.mkdir(parents=True, exist_ok=True)
+    destino = updir / f"{datetime.now():%Y%m%d-%H%M%S}-{Path(nome).name}"
+    destino.write_bytes(await file.read())
+
+    # ETL via main.py (mesmo padrão dos demais comandos do app)
+    etl = subprocess.run(
+        ["python3", "main.py", "etl", str(destino), "--db", DB],
+        capture_output=True, text=True, cwd=Path(__file__).parent,
+    )
+    if etl.returncode != 0:
+        return JSONResponse(
+            {"ok": False, "erro": (etl.stderr or etl.stdout or "Falha no ETL")[-400:]},
+            status_code=500,
+        )
+
+    def _num(pat: str) -> int:
+        m = re.search(pat, etl.stdout)
+        return int(m.group(1)) if m else 0
+
+    inseridos = _num(r"Inseridos:\s*(\d+)")
+    duplicados = _num(r"Duplicados:\s*(\d+)")
+    total = _num(r"Total no banco:\s*(\d+)")
+
+    # regenera o dashboard com os novos dados
+    subprocess.run(
+        ["python3", "main.py", "dashboard", "--db", DB, "--out", "dashboard.html"],
+        capture_output=True, cwd=Path(__file__).parent,
+    )
+    return {"ok": True, "arquivo": nome, "inseridos": inseridos, "duplicados": duplicados, "total": total}
 
 
 @app.get("/api/status")
@@ -839,6 +878,14 @@ footer{{margin-top:22px;text-align:center;color:var(--muted);font-size:11px;lett
     </button>
   </div>
 
+  <div style="display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;margin-bottom:18px;flex-wrap:wrap">
+    <label style="background:rgba(46,255,138,.1);border:1px solid rgba(46,255,138,.4);color:#2eff8a;padding:10px 18px;border-radius:8px;font-size:14px;cursor:pointer;white-space:nowrap">
+      📥 Adicionar planilha do dia
+      <input type="file" id="fileClipping" accept=".xls,.xlsx" style="display:none" onchange="enviarClipping()">
+    </label>
+    <span id="uploadMsg" style="color:var(--muted);font-size:13px">Envie a planilha de clipping (.xls/.xlsx) — o sistema lê e popula o histórico automaticamente.</span>
+  </div>
+
   <div class="nav">
     <a href="/dashboard" target="_blank" class="nav-card">
       <div class="ico">📋</div>
@@ -882,6 +929,32 @@ async function carregarStatus() {{
     document.getElementById('sB24h').textContent = (d.b_24h||0).toLocaleString('pt-BR');
     document.getElementById('sPctPos').textContent = (d.pct_pos||0) + '%';
   }} catch(e) {{}}
+}}
+
+async function enviarClipping() {{
+  const inp = document.getElementById('fileClipping');
+  if(!inp.files.length) return;
+  const f = inp.files[0];
+  const msg = document.getElementById('uploadMsg');
+  msg.textContent = '⏳ Enviando e processando ' + f.name + '…';
+  log('Upload: ' + f.name, 'inf');
+  const fd = new FormData(); fd.append('file', f);
+  try {{
+    const resp = await fetch('/api/upload-clipping', {{method:'POST', body:fd}});
+    const r = await resp.json();
+    if(r.ok) {{
+      msg.textContent = '✓ ' + r.inseridos + ' inseridas · ' + r.duplicados + ' duplicadas · total no banco: ' + r.total;
+      log('✓ ETL: +' + r.inseridos + ' inseridas, ' + r.duplicados + ' duplicadas (total ' + r.total + ')', 'ok');
+      carregarStatus();
+    }} else {{
+      msg.textContent = '✗ ' + (r.erro || 'Falha no processamento');
+      log('✗ ' + (r.erro || 'falha no upload'), 'err');
+    }}
+  }} catch(e) {{
+    msg.textContent = '✗ Erro de rede ao enviar a planilha';
+    log('✗ ' + e, 'err');
+  }}
+  inp.value = '';
 }}
 
 function log(txt, cls='') {{
