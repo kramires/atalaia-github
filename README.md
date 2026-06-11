@@ -101,12 +101,18 @@ Sem terminal: dê **duplo-clique** nos arquivos da pasta —
 
 *(Na 1ª vez o macOS pode pedir permissão: clique direito → Abrir.)*
 
-### No dia a dia (derrubar / subir — sem rebuild)
+### No dia a dia (parar / subir — sem rebuild)
 
 ```bash
-docker compose down        # derruba (mantém os dados nos volumes)
+docker compose stop        # PARA o container (continua na lista do Docker Desktop)
 docker compose up -d       # sobe de novo (rápido, sem rebuildar)
 ```
+
+> **`stop` vs `down`:** `stop` apenas pausa o container (ele continua na lista,
+> pronto pra reiniciar). `down` **remove** o container (some da lista) e a rede.
+> Nos **dois casos os dados ficam salvos** — banco, uploads e saídas vivem nos
+> volumes do host (`./data`, `./output`, `./logs`), não dentro do container.
+> Use `down` só quando quiser limpar de verdade (ou trocar de versão).
 
 ### Depois de mudar o código
 
