@@ -36,18 +36,6 @@ Funciona em **duas trilhas paralelas:**
 
 ### 1. Clonar & Instalar
 
-```bash
-cd ~/Desktop
-git clone <repo-url> projeto_comsoc_cmtEB
-cd projeto_comsoc_cmtEB
-
-# Criar ambiente Python
-python3.11 -m venv venv
-source venv/bin/activate  # ou venv\Scripts\activate (Windows)
-
-# Instalar dependências
-pip install -r requirements.txt
-```
 
 ### 2. Configurar Chaves API
 
@@ -108,7 +96,7 @@ python app.py
 
 ### 🚀 Roadmap (Fase 2+)
 
-- [ ] Hospedagem remota (EBNet/nuvem)
+- [ ] Hospedagem remota (nuvem)
 - [ ] Autenticação (OAuth2/SAML)
 - [ ] Ollama local (análise sensível)
 - [ ] Tavily/SerpAPI (cobertura expandida)
@@ -280,11 +268,11 @@ Mais: ver [SETUP.md § 13 — Troubleshooting](SETUP.md#13-troubleshooting)
 ## Estrutura do Projeto
 
 ```
-projeto_comsoc_cmtEB/
+projeto_comsoc_bot/
 ├── app.py                  # FastAPI central
 ├── main.py                 # CLI entry point
 ├── config/
-│   └── config.yaml         # Configurações
+│   └── config.yaml        # Configurações
 ├── src/
 │   ├── core/               # Database, config, lifecycle
 │   ├── intake/             # ETL, RSS, coleta
