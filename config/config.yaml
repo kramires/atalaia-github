@@ -1,0 +1,95 @@
+anthropic:
+  max_tokens: 4096
+  modelo: claude-sonnet-4-6
+  temperature: 0.3
+briefings:
+  saida_padrao: output/briefings
+circuit_breaker:
+  falhas_para_abrir: 3
+  timeout_reset_segundos: 120
+coleta:
+  google_news_rate_limit_min: 15
+  max_chars_item: 8000
+  timeout_http_segundos: 30
+  user_agent: ATALAIA-ComSoc/1.0
+dashboard:
+  max_arquivos_retidos: 30
+  saida_padrao: output/dashboards
+database:
+  caminho: data/atalaia.db
+fontes: []
+janela:
+  dias: 90
+  hard_cap_ciclo: 100
+observabilidade:
+  dir_logs: logs
+  nivel_log: INFO
+  retencao_dias: 30
+openai:
+  modelo: gpt-4o-mini
+  max_tokens: 4096
+  temperature: 0.3
+
+deepseek:
+  modelo: deepseek-chat
+  max_tokens: 4096
+  temperature: 0.3
+  base_url: https://api.deepseek.com
+
+ollama:
+  base_url: http://localhost:11434
+  max_tokens: 4096
+  modelo: llama3.1
+providers:
+  analise: balanceado       # openai (primário) → deepseek (secundário)
+  briefing_p1: balanceado
+  briefing_p2: balanceado
+react_loop:
+  max_iteracoes: 6
+  max_tokens_contexto: 40000
+  timeout_tool_segundos: 60
+relevancia:
+  threshold: 0.0             # 0.0 = analisa TUDO que o Google News retornar
+  keywords_criticas:
+    - exército brasileiro
+    - forças armadas
+    - exército
+    - militares
+    - defesa nacional
+    - comando do exército
+    - marinha do brasil
+    - aeronáutica
+  keywords_primarias:
+    - general
+    - oficial
+    - soldado
+    - operação militar
+    - segurança nacional
+    - fronteira
+    - amazônia
+    - brigada
+    - batalhão
+    - quartel
+    - cmtex
+    - ccomsex
+    - ministério da defesa
+  keywords_secundarias:
+    - defesa
+    - segurança pública
+    - operação
+    - missão
+    - tropas
+    - armamento
+scheduler:
+  ativo: true
+  intervalo_minutos: 60
+  timezone: America/Sao_Paulo
+sistema:
+  nome: "ATALAIA ComSoc"
+  queries_google_news:
+    - "Exército Brasileiro"
+    - "Forças Armadas"
+    - "Comando do Exército"
+    - "Ministério da Defesa"
+    - "defesa nacional brasil"
+    - "militares brasileiros"

@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATALAIA ComSoc — Síntese de Mídia</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .header {
+            border-top: 4px solid #1a73e8;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 20px 0 10px 0;
+            color: #1a73e8;
+            font-size: 28px;
+        }
+        .header .meta {
+            font-size: 13px;
+            color: #666;
+        }
+        .section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #1a73e8;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+        .panorama {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .stat .label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+        .stat .value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+        .destaque {
+            border-left: 4px solid #1a73e8;
+            padding: 15px;
+            margin: 15px 0;
+            background: #f9fafb;
+            border-radius: 2px;
+        }
+        .destaque.negativo {
+            border-left-color: #d32f2f;
+        }
+        .destaque .veiculo {
+            font-weight: bold;
+            color: #1a73e8;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+        .destaque .titulo {
+            font-weight: 600;
+            margin: 8px 0 5px 0;
+            font-size: 15px;
+        }
+        .destaque .resumo {
+            font-size: 13px;
+            color: #666;
+            margin: 5px 0;
+            line-height: 1.4;
+        }
+        .destaque .meta {
+            font-size: 11px;
+            color: #999;
+            margin-top: 8px;
+        }
+        .destaque .link {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 8px;
+            background: #e3f2fd;
+            color: #1a73e8;
+            text-decoration: none;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .destaque .link:hover {
+            background: #bbdefb;
+        }
+        .narrativa {
+            padding: 12px;
+            margin: 10px 0;
+            background: #f5f5f5;
+            border-radius: 3px;
+            border-left: 3px solid #f57c00;
+        }
+        .narrativa .nome {
+            font-weight: 600;
+            color: #333;
+        }
+        .narrativa .freq {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .temas {
+            margin-top: 8px;
+        }
+        .tema {
+            display: inline-block;
+            background: #ffe0b2;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            color: #e65100;
+        }
+        .mudanca {
+            padding: 12px;
+            margin: 10px 0;
+            background: #fff3cd;
+            border-left: 3px solid #ffc107;
+            border-radius: 3px;
+        }
+        .mudanca .narrativa {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .tabela-itens {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        .tabela-itens th {
+            background: #f5f5f5;
+            padding: 10px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+            color: #333;
+        }
+        .tabela-itens td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .tabela-itens tr:hover {
+            background: #f9fafb;
+        }
+        .sentimento {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-weight: 500;
+            font-size: 11px;
+        }
+        .sentimento.positiva {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        .sentimento.neutra {
+            background: #e0e0e0;
+            color: #424242;
+        }
+        .sentimento.negativa {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .vazio {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-style: italic;
+        }
+        .degradado {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>ATALAIA ComSoc — Síntese de Mídia</h1>
+        <div class="meta">{{ timestamp }} | Ciclo: {{ ciclo_id }}</div>
+    </div>
+
+    {% if modo_degradado %}
+    <div class="degradado">
+        ⚠️ <strong>Modo Degradado:</strong> Análise parcial (LLM indisponível)
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h2>📊 Panorama do Ciclo</h2>
+        <div class="panorama">
+            <div class="stat">
+                <div class="label">Período</div>
+                <div class="value">{{ periodo_inicio }} → {{ periodo_fim }}</div>
+            </div>
+            <div class="stat">
+                <div class="label">Matérias</div>
+                <div class="value">{{ total_itens }}</div>
+            </div>
+            <div class="stat">
+                <div class="label">Sentimento</div>
+                <div class="value">{{ pct_positiva }}% POS</div>
+            </div>
+            <div class="stat">
+                <div class="label">Risco</div>
+                <div class="value">{{ nivel_risco }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🟢 Destaques Positivos</h2>
+        {% if destaques_positivos %}
+        {% for d in destaques_positivos %}
+        <div class="destaque">
+            <div class="veiculo">{{ d.veiculo }}</div>
+            <div class="titulo">{{ d.titulo }}</div>
+            <div class="resumo">{{ d.resumo }}</div>
+            <div class="meta">[{{ d.tipo_inferencia }} | conf: {{ "%.2f" | format(d.confianca) }}]</div>
+            <a href="{{ d.link }}" class="link" target="_blank">Abrir matéria →</a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="vazio">Nenhum destaque positivo identificado</div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>🔴 Destaques Negativos / Alertas</h2>
+        {% if destaques_negativos %}
+        {% for d in destaques_negativos %}
+        <div class="destaque negativo">
+            <div class="veiculo">{{ d.veiculo }}</div>
+            <div class="titulo">{{ d.titulo }}</div>
+            <div class="resumo">{{ d.resumo }}</div>
+            <div class="meta">[{{ d.tipo_inferencia }} | conf: {{ "%.2f" | format(d.confianca) }}]</div>
+            <a href="{{ d.link }}" class="link" target="_blank">Abrir matéria →</a>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="vazio">Nenhum destaque negativo identificado</div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>📖 Narrativas Identificadas</h2>
+        {% if narrativas %}
+        {% for n in narrativas %}
+        <div class="narrativa">
+            <div class="nome">{{ loop.index }}. {{ n.nome }}</div>
+            <div class="freq">{{ n.frequencia }} matéria{{ "s" if n.frequencia != 1 else "" }}</div>
+            <div class="temas">
+                {% for tema in n.temas %}
+                <span class="tema">{{ tema }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="vazio">Nenhuma narrativa identificada</div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>🔄 Mudanças de Enquadramento</h2>
+        {% if mudancas_enquadramento %}
+        {% for m in mudancas_enquadramento %}
+        <div class="mudanca">
+            <div class="narrativa">{{ m.narrativa }}</div>
+            <div>De: <strong>"{{ m.enquadramento_anterior }}"</strong></div>
+            <div>Para: <strong>"{{ m.enquadramento_novo }}"</strong></div>
+            <div class="meta" style="margin-top: 8px;">[{{ m.tipo_inferencia }} | conf: {{ "%.2f" | format(m.confianca) }}]</div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="vazio">Nenhuma mudança de enquadramento detectada</div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>📋 Todas as Matérias do Ciclo</h2>
+        {% if todos_os_itens %}
+        <table class="tabela-itens">
+            <thead>
+                <tr>
+                    <th style="width: 80px;">Data</th>
+                    <th style="width: 120px;">Veículo</th>
+                    <th style="width: 100px;">Sentimento</th>
+                    <th>Título</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in todos_os_itens %}
+                <tr>
+                    <td>{{ item.data }}</td>
+                    <td>{{ item.veiculo }}</td>
+                    <td>
+                        <span class="sentimento {{ item.sentimento | lower }}">
+                            {{ item.sentimento }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ item.link }}" target="_blank" style="color: #1a73e8; text-decoration: none;">
+                            {{ item.titulo }}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="vazio">Nenhuma matéria neste ciclo</div>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        Gerado em {{ timestamp }} | Modo: {{ "DEGRADADO" if modo_degradado else "NORMAL" }} | Ciclo {{ ciclo_id }}
+    </div>
+</body>
+</html>

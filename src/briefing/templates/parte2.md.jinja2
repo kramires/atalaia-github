@@ -1,0 +1,55 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ATALAIA ComSoc — PROSPECTIVA E PLANO DE AÇÃO
+{{ timestamp }} | Para: TC / Assistente ComSoc
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+⚠ AVISO: Este documento contém análise prospectiva gerada por IA.
+  Toda inferência está classificada como FATO, INTERPRETAÇÃO ou HIPÓTESE
+  com nível de confiança. Validação humana é obrigatória antes de
+  qualquer ação institucional.
+
+🎯 AVALIAÇÃO DE RISCO
+  Nível: {{ nivel_risco }} [conf: {{ (confianca * 100) | int }}%]
+  Justificativa: {{ justificativa }}
+  Tipo: [{{ tipo_inferencia }}]
+
+  Fatores de risco:
+{% if fatores_risco %}
+{% for fator in fatores_risco %}
+  • {{ fator }}
+{% endfor %}
+{% else %}
+  • (nenhum identificado)
+{% endif %}
+
+💡 OPORTUNIDADES DE POSICIONAMENTO
+{% if oportunidades %}
+{% for oport in oportunidades %}
+  • {{ oport }}
+{% endfor %}
+{% else %}
+  • (nenhuma identificada)
+{% endif %}
+
+📋 PLANO DE AÇÃO SUGERIDO (próximas 48h)
+{% if acoes_sugeridas %}
+{% for acao in acoes_sugeridas %}
+  {{ loop.index }}. {{ acao }}
+{% endfor %}
+{% else %}
+  (nenhuma ação sugerida neste ciclo)
+{% endif %}
+
+🔮 PROSPECÇÃO (curto prazo — próximos 3-5 dias)
+{% if prospeccao %}
+{% for item in prospeccao %}
+  • {{ item }}
+{% endfor %}
+{% else %}
+  • (nenhuma prospecção disponível)
+{% endif %}
+
+📌 NOTA DO ANALISTA
+  [Espaço para anotação manual antes de distribuir]
+
+🕐 Gerado por: {{ provider }} | Validação humana obrigatória antes de distribuição

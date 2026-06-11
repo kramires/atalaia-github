@@ -1,0 +1,61 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ATALAIA ComSoc — SÍNTESE DE MÍDIA
+{{ timestamp }} | Ciclo: {{ ciclo_id }}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📊 PANORAMA DO CICLO
+  Período: {{ periodo_inicio }} → {{ periodo_fim }}
+  Matérias analisadas: {{ total_itens }}
+  Sentimento geral: {{ n_positivos }}% POS | {{ n_neutros }}% NEU | {{ n_negativos }}% NEG
+  Risco identificado: {{ nivel_risco }}
+
+🟢 DESTAQUES POSITIVOS
+{% if destaques_positivos %}
+{% for d in destaques_positivos %}
+  [{{ d.veiculo }}] — {{ d.titulo }}
+  {{ d.resumo }} [{{ d.tipo_inferencia }} | conf: {{ "%.2f" | format(d.confianca) }}]
+  🔗 {{ d.link }}
+
+{% endfor %}
+{% else %}
+  (Nenhum destaque positivo identificado)
+{% endif %}
+
+🔴 DESTAQUES NEGATIVOS / ALERTAS
+{% if destaques_negativos %}
+{% for d in destaques_negativos %}
+  [{{ d.veiculo }}] — {{ d.titulo }}
+  {{ d.resumo }} [{{ d.tipo_inferencia }} | conf: {{ "%.2f" | format(d.confianca) }}]
+  🔗 {{ d.link }}
+
+{% endfor %}
+{% else %}
+  (Nenhum destaque negativo identificado)
+{% endif %}
+
+📖 NARRATIVAS IDENTIFICADAS
+{% if narrativas %}
+{% for n in narrativas %}
+  {{ loop.index }}. {{ n.nome }} — {{ n.frequencia }} matérias — temas: {{ n.temas | join(", ") }}
+{% endfor %}
+{% else %}
+  (Nenhuma narrativa identificada)
+{% endif %}
+
+🔄 MUDANÇAS DE ENQUADRAMENTO
+{% if mudancas_enquadramento %}
+{% for m in mudancas_enquadramento %}
+  ⚠ {{ m.narrativa }}: de "{{ m.enquadramento_anterior }}" para "{{ m.enquadramento_novo }}"
+     [{{ m.tipo_inferencia }} | conf: {{ "%.2f" | format(m.confianca) }}]
+
+{% endfor %}
+{% else %}
+  (Nenhuma mudança de enquadramento detectada)
+{% endif %}
+
+📋 TODAS AS MATÉRIAS DO CICLO
+{% for item in todos_os_itens %}
+{{ item.data }} | {{ item.veiculo }} | {{ item.sentimento }} | [{{ item.titulo }}]({{ item.link }})
+{% endfor %}
+
+🕐 Gerado em: {{ timestamp }} | Modo: {{ "DEGRADADO" if modo_degradado else "NORMAL" }}

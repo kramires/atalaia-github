@@ -1,0 +1,31 @@
+# ── Python ──
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# ── Ambiente virtual ──
+venv/
+.venv/
+env/
+
+# ── Secrets (NUNCA versionar) ──
+.env
+*.env
+!.env.example
+
+# ── Dados e saídas (dados institucionais não vão para o repositório) ──
+data/
+*.db
+*.sqlite
+*.sqlite3
+logs/
+output/
+*.html
+
+# ── Sistema operacional ──
+.DS_Store
+Thumbs.db

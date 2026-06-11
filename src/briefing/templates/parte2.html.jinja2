@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATALAIA ComSoc — Prospectiva e Plano de Ação</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            color: #333;
+        }
+        .header {
+            border-top: 4px solid #f57c00;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            margin: 20px 0 10px 0;
+            color: #f57c00;
+            font-size: 28px;
+        }
+        .header .meta {
+            font-size: 13px;
+            color: #666;
+        }
+        .aviso {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+            line-height: 1.6;
+        }
+        .aviso strong {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .section h2 {
+            color: #f57c00;
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 18px;
+        }
+        .risco-nivel {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 20px 0;
+        }
+        .risco-baixo {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+        .risco-medio {
+            background: #fff9c4;
+            color: #f57f17;
+        }
+        .risco-alto {
+            background: #ffccbc;
+            color: #d84315;
+        }
+        .risco-critico {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+        .confianca {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+        }
+        .justificativa {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            line-height: 1.6;
+            margin: 15px 0;
+        }
+        .lista {
+            margin: 15px 0;
+        }
+        .lista-item {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f9fafb;
+            border-left: 3px solid #f57c00;
+            border-radius: 2px;
+        }
+        .lista-item strong {
+            color: #f57c00;
+        }
+        .acao {
+            counter-increment: acao-counter;
+            padding: 12px;
+            margin: 10px 0;
+            background: #e8f5e9;
+            border-left: 3px solid #4caf50;
+            border-radius: 2px;
+        }
+        .acao::before {
+            content: counter(acao-counter) ". ";
+            font-weight: bold;
+            color: #4caf50;
+        }
+        .prospeccao-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            line-height: 1.6;
+        }
+        .prospeccao-item:last-child {
+            border-bottom: none;
+        }
+        .prospeccao-item::before {
+            content: "→ ";
+            color: #f57c00;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .nota {
+            background: #f0f4ff;
+            border: 1px dashed #1a73e8;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 20px 0;
+            min-height: 100px;
+        }
+        .nota .label {
+            font-weight: 600;
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+        .footer {
+            text-align: center;
+            font-size: 12px;
+            color: #999;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+        .vazio {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+            font-style: italic;
+        }
+        .degradado {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 12px;
+            margin: 20px 0;
+            border-radius: 3px;
+        }
+        .tipo-inferencia {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1a73e8;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+    </style>
+    <script>
+        // Initialize counter for acoes
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = '.acao { counter-increment: acao-counter; }';
+            document.head.appendChild(style);
+        });
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>ATALAIA ComSoc — Prospectiva e Plano de Ação</h1>
+        <div class="meta">{{ timestamp }} | Para: TC / Assistente ComSoc</div>
+    </div>
+
+    <div class="aviso">
+        <strong>⚠️ AVISO DE ANÁLISE PROSPECTIVA</strong>
+        Este documento contém análise prospectiva gerada por IA.
+        Toda inferência está classificada como FATO, INTERPRETAÇÃO ou HIPÓTESE
+        com nível de confiança. Validação humana é obrigatória antes de
+        qualquer ação institucional.
+    </div>
+
+    {% if modo_degradado %}
+    <div class="degradado">
+        ⚠️ <strong>Modo Degradado:</strong> Análise parcial (LLM indisponível)
+    </div>
+    {% endif %}
+
+    <div class="section">
+        <h2>🎯 Avaliação de Risco</h2>
+        <div class="risco-nivel {% if nivel_risco == 'BAIXO' %}risco-baixo{% elif nivel_risco == 'MÉDIO' %}risco-medio{% elif nivel_risco == 'ALTO' %}risco-alto{% else %}risco-critico{% endif %}">
+            {{ nivel_risco }} <span style="font-size: 13px;">[conf: {{ (confianca * 100) | int }}%]</span>
+        </div>
+        <div class="justificativa">{{ justificativa }}</div>
+        <div style="font-size: 12px; color: #666;">[{{ tipo_inferencia }}]</div>
+
+        <h3 style="margin-top: 20px; font-size: 14px;">Fatores de Risco</h3>
+        <div class="lista">
+            {% if fatores_risco %}
+            {% for fator in fatores_risco %}
+            <div class="lista-item">{{ fator }}</div>
+            {% endfor %}
+            {% else %}
+            <div class="vazio">Nenhum fator de risco identificado</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>💡 Oportunidades de Posicionamento</h2>
+        <div class="lista">
+            {% if oportunidades %}
+            {% for oport in oportunidades %}
+            <div class="lista-item">{{ oport }}</div>
+            {% endfor %}
+            {% else %}
+            <div class="vazio">Nenhuma oportunidade identificada</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Plano de Ação Sugerido (próximas 48h)</h2>
+        <style>
+            .acao { counter-increment: acao-counter; }
+            .section-acoes { counter-reset: acao-counter; }
+        </style>
+        <div class="section-acoes">
+            {% if acoes_sugeridas %}
+            {% for acao in acoes_sugeridas %}
+            <div class="acao">{{ acao }}</div>
+            {% endfor %}
+            {% else %}
+            <div class="vazio">Nenhuma ação sugerida neste ciclo</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>🔮 Prospecção (curto prazo — próximos 3-5 dias)</h2>
+        {% if prospeccao %}
+        <div class="lista">
+            {% for item in prospeccao %}
+            <div class="prospeccao-item">{{ item }}</div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="vazio">Nenhuma prospecção disponível</div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h2>📌 Nota do Analista</h2>
+        <div class="nota">
+            <div class="label">Espaço para anotação manual antes de distribuir:</div>
+            <p style="color: #999; font-style: italic; margin: 0;">(Preencha com observações, contexto adicional ou ações emergenciais)</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        Gerado por: <strong>{{ provider }}</strong> | Validação humana obrigatória antes de distribuição
+    </div>
+</body>
+</html>
