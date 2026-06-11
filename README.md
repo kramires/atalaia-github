@@ -5,6 +5,8 @@
 ![SQLite](https://img.shields.io/badge/db-SQLite-003B57)
 ![Licença](https://img.shields.io/badge/licen%C3%A7a-MIT-green)
 ![Status](https://img.shields.io/badge/status-MVP%20Fase%201-success)
+![Docker](https://img.shields.io/badge/docker-ready-2496ED)
+![Docker CI](https://github.com/SEU-USUARIO/atalaia-github/actions/workflows/docker-build.yml/badge.svg)
 
 Sistema automatizado de **monitoramento, consolidação e análise de mídia** com
 classificação de sentimento, detecção de narrativas, dashboard HTML interativo e
@@ -65,6 +67,80 @@ python app.py
 
 # Acesse: http://localhost:9001
 ```
+
+---
+
+## Rodar com Docker (recomendado)
+
+Sobe tudo sem instalar Python/dependências na máquina — só precisa do **Docker Desktop**.
+
+### Primeira vez (build)
+
+```bash
+# 1. (opcional) configure as chaves de LLM
+cp .env.example .env      # edite e preencha OPENAI_API_KEY e/ou DEEPSEEK_API_KEY
+#    sem chave o sistema sobe igual, mas o briefing sai em modo degradado (sem IA)
+
+# 2. build + sobe em segundo plano
+docker compose up -d --build
+
+# 3. acesse
+#    http://localhost:9001
+```
+
+No primeiro start o container **cria o schema do banco** (migrations) e sobe o servidor
+em `0.0.0.0:9001`. Os dados ficam em **volumes** no host (não somem ao derrubar):
+`./data` (banco SQLite + planilhas enviadas), `./output` (dashboards/briefings), `./logs`.
+
+### Atalho no macOS (duplo-clique)
+
+Sem terminal: dê **duplo-clique** nos arquivos da pasta —
+
+- **`iniciar-docker.command`** → sobe o sistema e abre `http://localhost:9001` no navegador.
+- **`parar-docker.command`** → derruba (os dados continuam salvos).
+
+*(Na 1ª vez o macOS pode pedir permissão: clique direito → Abrir.)*
+
+### No dia a dia (derrubar / subir — sem rebuild)
+
+```bash
+docker compose down        # derruba (mantém os dados nos volumes)
+docker compose up -d       # sobe de novo (rápido, sem rebuildar)
+```
+
+### Depois de mudar o código
+
+```bash
+docker compose up -d --build   # rebuilda a imagem e sobe
+```
+
+### Comandos úteis
+
+```bash
+docker compose logs -f                 # acompanhar logs
+docker compose ps                      # status / saúde (healthcheck)
+docker compose restart                 # reiniciar
+
+# Rodar a CLI dentro do container (ETL em lote, etc.):
+docker compose exec atalaia python main.py etl data/uploads/<arquivo>.xls --db data/atalaia.db
+docker compose exec atalaia python main.py dashboard --db data/atalaia.db --out dashboard.html
+```
+
+> Para popular o histórico de uma vez, coloque as planilhas em `./data/uploads/` (no host)
+> e rode o `etl` apontando para a pasta — ou use o botão **Adicionar planilha do dia** na interface.
+
+### E o `start.command`?
+
+O `start.command` (e `start.sh`/`start.bat`) é o atalho **nativo**: ele cria um
+ambiente virtual Python (`venv`), instala as dependências e roda o app **direto na
+máquina** (sem Docker). Continua funcionando — é uma alternativa ao Docker, não um
+substituto. **Use um OU outro**, não os dois ao mesmo tempo (ambos usam a porta 9001
+e dariam conflito). Resumo:
+
+| Forma | Como subir | Quando usar |
+|-------|-----------|-------------|
+| **Docker** | `docker compose up -d` | Servidor, deploy, reprodutível, sem mexer no Python da máquina |
+| **Nativo** | duplo-clique no `start.command` (macOS) | Desenvolvimento local rápido na sua máquina |
 
 ---
 

@@ -1,0 +1,29 @@
+# Ambiente e VCS
+venv/
+.venv/
+.git/
+.gitignore
+
+# Caches Python
+__pycache__/
+*.pyc
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Dados, saídas e segredos (não entram na imagem)
+data/
+*.db
+*.sqlite*
+logs/
+output/
+dashboard.html
+.env
+
+# Sistema / launchers desnecessários no container
+.DS_Store
+start.command
+start.sh
+start.bat
+iniciar-docker.command
+parar-docker.command

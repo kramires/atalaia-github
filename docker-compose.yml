@@ -1,0 +1,28 @@
+services:
+  atalaia:
+    build: .
+    image: atalaia-comsoc
+    container_name: atalaia-comsoc
+    ports:
+      - "9001:9001"
+    # As variáveis vêm do shell ou de um arquivo .env nesta pasta (carregado
+    # automaticamente pelo Docker Compose). Os ":-" garantem que o primeiro
+    # "up" funcione mesmo sem .env (o sistema cai em modo degradado sem chave).
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY:-}
+      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - PORT=9001
+    volumes:
+      - ./data:/app/data        # banco SQLite + planilhas enviadas (persiste)
+      - ./output:/app/output    # dashboards e briefings gerados
+      - ./logs:/app/logs        # logs
+    restart: unless-stopped
+    healthcheck:
+      # usa python (já presente na imagem) — slim não tem curl/wget
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:9001/api/status', timeout=3).status==200 else 1)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
